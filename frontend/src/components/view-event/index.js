@@ -19,7 +19,6 @@ class ViewEvent extends React.Component {
   }
 
   renderTR(date, key) {
-    console.log(format(date, 'hh:mm'));
     return (
       <tr key={key} className="striped--light-gray">
         <td>

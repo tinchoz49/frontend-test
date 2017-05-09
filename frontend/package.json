@@ -40,7 +40,7 @@
     "start": "env-cmd .env react-scripts start",
     "start:production": "npm run build && npm run serve",
     "build": "env-cmd .env react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "eslint src",
     "eject": "react-scripts eject",
     "serve": "env-cmd .env node -r 'babel-register' src/server.js"
   },
