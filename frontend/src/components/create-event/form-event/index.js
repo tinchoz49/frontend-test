@@ -87,7 +87,6 @@ class FormEvent extends React.Component {
 
   onDrop(files) {
     this.event.image = files[0];
-    this.validate();
   }
 
   renderInputText({ id, label }) {
