@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import format from 'date-fns/format';
+import { format, parse } from 'date-fns';
 
 export default observer(class DatesWidget extends React.Component {
   constructor(props) {
@@ -26,7 +26,12 @@ export default observer(class DatesWidget extends React.Component {
   onChange(key) {
     return event => {
       const value = event.target.value;
-      this.parseDates[key] = value;
+      const oldDate = this.props.dates[key];
+      if (event.target.type === 'date') {
+        this.props.dates[key] = parse(`${value}T${format(oldDate, 'hh:mm:ss')}`);
+      } else {
+        this.props.dates[key] = parse(`${format(oldDate, 'YYYY-MM-DD')}T${value}`);
+      }
     };
   }
 
