@@ -1,0 +1,9 @@
+:host {
+  .dropzone {
+    min-height: 250px;
+  }
+
+  .textarea {
+    height: 90%;
+  }
+}

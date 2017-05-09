@@ -1,0 +1,16 @@
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 7rem;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body > #root {
+  height: 100%;
+}
