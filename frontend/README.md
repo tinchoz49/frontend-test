@@ -15,14 +15,14 @@ $ mv .env.example .env
 $ npm install
 ```
 3. Run the app
-  1. Running in `development` mode (using webpack and without SSR)
-  ```
-  $ npm start
-  ```
-  2. Running in `production` mode
-  ```
-  $ npm start:production
-  ```
+   1. Running in `development` mode (using webpack and without SSR)
+   ```
+   $ npm start
+   ```
+   2. Running in `production` mode
+   ```
+   $ npm start:production
+   ```
 
 Your app by default is going to be listening in: `http://localhost:3001`
 
