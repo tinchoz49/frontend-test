@@ -1,56 +1,60 @@
-var fs = require('fs');
-var path = require('path');
-var eventsDir = path.join(__dirname, 'events');
+const fs = require('fs');
+const pify = require('pify');
+const readdir = pify(fs.readdir);
+const readFile = pify(fs.readFile);
+const writeFile = pify(fs.writeFile);
+const path = require('path');
+const eventsDir = path.join(__dirname, 'events');
+
+function _getEvent(eventsDir, fileName) {
+  return readFile(path.join(eventsDir, fileName)).then(JSON.parse);
+}
 
 function findAll () {
-  return fs
-    .readdirSync(eventsDir)
-    .map(function (fileName) {
-      return JSON.parse(fs.readFileSync(path.join(eventsDir, fileName)));
+  return readdir(eventsDir)
+    .then(events => {
+      const list = events.map(fileName => _getEvent(eventsDir, fileName));
+      return Promise.all(list);
     });
 }
 
 function finById (id) {
-  var fileName = fs
-    .readdirSync(eventsDir)
-    .filter(function (fileName) {
-      return fileName === String(id + '.json');
-    })[0];
-  if(fileName) {
-    var jsonEvent = fs.readFileSync(path.join(eventsDir, fileName));
-    return JSON.parse(jsonEvent);  
-  } else {
-    return false;
-  }
+  return readdir(eventsDir)
+    .then(events => {
+      return events.find(fileName => fileName === `${id}.json`);
+    })
+    .then(fileName => {
+      if (fileName) {
+        return _getEvent(eventsDir, fileName);
+      }
+
+      return false;
+    });
 }
 
 function create (event) {
-  event.id = lastId() + 1;
-  var jsonEvent = JSON.stringify(event);
-  fs.writeFileSync(path.join(eventsDir, event.id + '.json'), jsonEvent);
-  return event;
+  return lastId()
+    .then(id => {
+      event.id = id + 1;
+      const jsonEvent = JSON.stringify(event);
+      return writeFile(path.join(eventsDir, `${event.id}.json`), jsonEvent)
+        .then(() => event);
+    });
 }
 
 function featured () {
-  return fs
-    .readdirSync(eventsDir)
-    .map(function (fileName) {
-      return JSON.parse(fs.readFileSync(path.join(eventsDir, fileName)));
-    })
-    .filter(function (event) {
-      return event.id % 2 === 0;
+  return findAll()
+    .then(events => {
+      return events.filter(event => event.id % 2 === 0);
     });
 }
 
 function lastId () {
-  return fs
-    .readdirSync(eventsDir)
-    .map(function (fileName) {
-      return Number(fileName.split('.')[0]);
+  return readdir(eventsDir)
+    .then(events => {
+      return events.map(fileName => Number(fileName.split('.')[0]));
     })
-    .sort(function (a, b) {
-      return b > a;
-    })[0];
+    .then(events => events.sort((a, b) => b > a)[0]);
 }
 
 module.exports = {
@@ -59,4 +63,3 @@ module.exports = {
   featured: featured,
   create: create
 };
-

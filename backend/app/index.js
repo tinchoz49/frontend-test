@@ -1,8 +1,9 @@
-var app = require('./server');
+const app = require('./server');
+const pino = require('pino')();
 
-var server = app.listen(3000, function () {
-  var host = server.address().address;
-  var port = server.address().port;
+const server = app.listen(3000, function () {
+  const host = server.address().address;
+  const port = server.address().port;
 
-  console.log('Events app listening at http://%s:%s', host, port);
+  pino.info('Events app listening at http://%s:%s', host, port);
 });

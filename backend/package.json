@@ -5,6 +5,7 @@
   "main": "app/index.js",
   "scripts": {
     "test": "node test",
+    "posttest": "eslint app/**/*.js",
     "start": "node app"
   },
   "repository": {
@@ -19,10 +20,29 @@
   "homepage": "https://github.com/ingsw/frontend-test#readme",
   "dependencies": {
     "body-parser": "^1.13.2",
-    "express": "^4.13.1"
+    "cors": "^2.8.3",
+    "express": "^4.13.1",
+    "express-jsonschema": "^1.1.6",
+    "pify": "^2.3.0",
+    "pino": "^4.5.1"
   },
   "devDependencies": {
+    "eslint": "^3.19.0",
     "supertest": "^1.0.1",
     "tape": "^4.0.1"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "indent": ["error", 2],
+      "no-var": 2,
+      "prefer-const": 2,
+      "semi": 2,
+      "quotes": [2, "single"]
+    }
   }
 }
